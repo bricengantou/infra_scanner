@@ -1,0 +1,50 @@
+group = "com.linnovlab.infra_scanner"
+version = "1.0-SNAPSHOT"
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+repositories {
+    google()
+    mavenCentral()
+    flatDir { dirs 'libs' } // pour charger le JAR depuis android/libs
+}
+
+android {
+    namespace "com.linnovlab.infra_scanner"
+    compileSdk = 34
+
+    defaultConfig {
+        minSdk = 21
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+        test.java.srcDirs += "src/test/kotlin"
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+        // Laisse JUnit4 par défaut (évite useJUnitPlatform si tu n'utilises pas JUnit5)
+    }
+}
+
+dependencies {
+    implementation files('libs/SDK_release_v2.2.1.jar') // <-- ton SDK
+    // La stdlib Kotlin est fournie par le plugin; pas besoin d'ajouter explicitement.
+
+    // Tests (facultatif)
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+    testImplementation "org.mockito:mockito-core:5.10.0"
+}
